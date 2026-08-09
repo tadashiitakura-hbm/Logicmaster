@@ -165,6 +165,7 @@ const BRASS = "#B4802B";
 const GOOD = "#2E6B57";
 const BAD = "#9C4A3C";
 const SKY = "#3B6B87";
+const PLUM = "#6E5773";
 
 // ---------- キーワード → かんたんヒント ----------
 const KEYWORD_RULES = [
@@ -262,6 +263,13 @@ const LINK_ITEMS = [
 const GIST_QUESTIONS = [
   {
     passage: "「あり」は一ぴきではとても小さく、力も弱い生き物だ。しかし、あり全体で見ると、自分の体よりずっと重いえさを運んだり、大きな巣を作ったりすることができる。それは、一ぴき一ぴきが役わりを分担し、仲間と協力しているからだ。えさを見つけたありは、においを地面につけながら巣にもどり、仲間に道を教える。こうして、たくさんのありが同じ道を通り、力を合わせて大きな仕事をなしとげているのだ。",
+    structure: [
+      { text: "「あり」は一ぴきではとても小さく、力も弱い生き物だ。", role: "support" },
+      { text: "しかし、あり全体で見ると、自分の体よりずっと重いえさを運んだり、大きな巣を作ったりすることができる。", role: "support" },
+      { text: "それは、一ぴき一ぴきが役わりを分担し、仲間と協力しているからだ。", role: "reason" },
+      { text: "えさを見つけたありは、においを地面につけながら巣にもどり、仲間に道を教える。", role: "example" },
+      { text: "こうして、たくさんのありが同じ道を通り、力を合わせて大きな仕事をなしとげているのだ。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "ありは体が小さくて力が弱い生き物だ", correct: false, note: "× これは1文目だけの話だよ。あとに『協力するとすごい』という話が続くから、これだけでは足りないよ。" },
@@ -272,6 +280,13 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "空に虹が見えるのは、いつでもというわけではない。虹ができるには、太陽の光と、空気中にただよう小さな水のつぶの両方が必要だ。雨が降ったすぐあとや、晴れているのに小さな雨がぱらぱらと降っているとき、空気中に水のつぶがたくさんただよっている。そこに太陽の光が差しこむと、光が水のつぶの中で曲げられて七色に分かれ、虹として見えるのだ。だから、虹を見つけたいときは、太陽を背にして、水のつぶがただよっていそうな方向を見るとよい。",
+    structure: [
+      { text: "空に虹が見えるのは、いつでもというわけではない。", role: "support" },
+      { text: "虹ができるには、太陽の光と、空気中にただよう小さな水のつぶの両方が必要だ。", role: "support" },
+      { text: "雨が降ったすぐあとや、晴れているのに小さな雨がぱらぱらと降っているとき、空気中に水のつぶがたくさんただよっている。", role: "example" },
+      { text: "そこに太陽の光が差しこむと、光が水のつぶの中で曲げられて七色に分かれ、虹として見えるのだ。", role: "reason" },
+      { text: "だから、虹を見つけたいときは、太陽を背にして、水のつぶがただよっていそうな方向を見るとよい。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "虹は雨の日にできる", correct: false, note: "× 雨だけでは虹はできないよ。太陽の光も必要と書いてあるから、これだけでは足りないよ。" },
@@ -282,6 +297,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "小平市の図書館では、毎年11月に「読書週間」という取り組みが行われている。この期間中は、ふだんよりも多くの新しい本が紹介されるほか、地域の人が自分の好きな本をしょうかいし合う「読書会」も開かれる。また、読み聞かせが苦手な保護者のために、司書が読み聞かせのこつを教える教室も用意されている。こうしたさまざまな取り組みを通して、図書館は、大人から子どもまで、より多くの人に本を読む楽しさを知ってもらおうとしている。",
+    structure: [
+      { text: "小平市の図書館では、毎年11月に「読書週間」という取り組みが行われている。", role: "support" },
+      { text: "この期間中は、ふだんよりも多くの新しい本が紹介されるほか、地域の人が自分の好きな本をしょうかいし合う「読書会」も開かれる。", role: "example" },
+      { text: "また、読み聞かせが苦手な保護者のために、司書が読み聞かせのこつを教える教室も用意されている。", role: "example" },
+      { text: "こうしたさまざまな取り組みを通して、図書館は、大人から子どもまで、より多くの人に本を読む楽しさを知ってもらおうとしている。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "読書週間には読書会が開かれる", correct: false, note: "× これは取り組みの一つの例だよ。他にも取り組みがあるから、これだけでは足りないよ。" },
@@ -292,6 +313,13 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "信号機の色には、それぞれ意味がある。青は「進んでもよい」、黄色は「注意して、止まれるように準備する」、赤は「止まれ」を表す。この3つの色を組み合わせることで、車や人が同じ道を安全に通れるようにしているのだ。もし信号機がなければ、どの車が先に進んでよいかが分からず、事故が増えてしまうだろう。だからこそ、信号機は交通の安全を守る大切なしくみだといえる。",
+    structure: [
+      { text: "信号機の色には、それぞれ意味がある。", role: "support" },
+      { text: "青は「進んでもよい」、黄色は「注意して、止まれるように準備する」、赤は「止まれ」を表す。", role: "example" },
+      { text: "この3つの色を組み合わせることで、車や人が同じ道を安全に通れるようにしているのだ。", role: "support" },
+      { text: "もし信号機がなければ、どの車が先に進んでよいかが分からず、事故が増えてしまうだろう。", role: "reason" },
+      { text: "だからこそ、信号機は交通の安全を守る大切なしくみだといえる。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "青は進んでもよいという意味だ", correct: false, note: "× これは色の意味の一つだよ。黄色や赤の説明もあるから、これだけでは足りないよ。" },
@@ -302,6 +330,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "ごみを正しく分別すると、資源として再利用できるものが増える。たとえば、ペットボトルは細かくくだかれて、新しい服やシートの材料になる。牛乳パックは、とかしてトイレットペーパーに生まれ変わることもある。こうして、一度使ったものを別の形で役立てることで、ごみの量をへらし、資源を大切に使うことができるのだ。",
+    structure: [
+      { text: "ごみを正しく分別すると、資源として再利用できるものが増える。", role: "support" },
+      { text: "たとえば、ペットボトルは細かくくだかれて、新しい服やシートの材料になる。", role: "example" },
+      { text: "牛乳パックは、とかしてトイレットペーパーに生まれ変わることもある。", role: "example" },
+      { text: "こうして、一度使ったものを別の形で役立てることで、ごみの量をへらし、資源を大切に使うことができるのだ。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "ペットボトルは服の材料になる", correct: false, note: "× これは具体例の一つだよ。牛乳パックの話もあるから、これだけでは足りないよ。" },
@@ -312,6 +346,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "くまやしまりすなどの動物は、冬になると冬眠する。冬眠中は、体温が下がり、心臓の動きもゆっくりになる。これは、冬の間はえさとなる植物や虫が少なくなり、活動を続けるためのエネルギーを得にくくなるからだ。そこで、動物たちは体の動きを最小限におさえて、少ないエネルギーで冬をこすくふうをしているのである。",
+    structure: [
+      { text: "くまやしまりすなどの動物は、冬になると冬眠する。", role: "support" },
+      { text: "冬眠中は、体温が下がり、心臓の動きもゆっくりになる。", role: "example" },
+      { text: "これは、冬の間はえさとなる植物や虫が少なくなり、活動を続けるためのエネルギーを得にくくなるからだ。", role: "reason" },
+      { text: "そこで、動物たちは体の動きを最小限におさえて、少ないエネルギーで冬をこすくふうをしているのである。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "くまは冬になると冬眠する", correct: false, note: "× これは1文目だけの話だよ。『なぜ冬眠するか』の説明が文章の中心だよ。" },
@@ -322,6 +362,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "学芸会に向けて、クラスでは係を分担して準備を進めた。大道具係は背景の絵をかき、衣装係は登場人物の服を用意し、音響係は場面に合う音楽を選んだ。それぞれの係が自分の担当に集中しながらも、休み時間には他の係の様子を見に行き、こまっていることがあれば手伝った。こうして、係どうしが助け合いながら準備を進めたことで、学芸会は大成功をおさめた。",
+    structure: [
+      { text: "学芸会に向けて、クラスでは係を分担して準備を進めた。", role: "support" },
+      { text: "大道具係は背景の絵をかき、衣装係は登場人物の服を用意し、音響係は場面に合う音楽を選んだ。", role: "example" },
+      { text: "それぞれの係が自分の担当に集中しながらも、休み時間には他の係の様子を見に行き、こまっていることがあれば手伝った。", role: "example" },
+      { text: "こうして、係どうしが助け合いながら準備を進めたことで、学芸会は大成功をおさめた。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "大道具係は背景の絵をかいた", correct: false, note: "× これは係の仕事の一つの例だよ。他の係の話もあるから足りないよ。" },
@@ -332,6 +378,13 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "昔の洗たくは、たらいと洗たく板を使い、手でこすって汚れを落としていた。これはとても時間がかかり、体力も必要な作業だった。やがて、電気で回転する洗たく機が発明されると、水と洗ざいを入れてスイッチを押すだけで、汚れを落とせるようになった。今では、乾燥まで自動で行ってくれる機械も増え、家事にかかる時間は大きく短縮された。このように、道具の進化は、人々の生活を大きく楽にしてきたのである。",
+    structure: [
+      { text: "昔の洗たくは、たらいと洗たく板を使い、手でこすって汚れを落としていた。", role: "example" },
+      { text: "これはとても時間がかかり、体力も必要な作業だった。", role: "support" },
+      { text: "やがて、電気で回転する洗たく機が発明されると、水と洗ざいを入れてスイッチを押すだけで、汚れを落とせるようになった。", role: "example" },
+      { text: "今では、乾燥まで自動で行ってくれる機械も増え、家事にかかる時間は大きく短縮された。", role: "example" },
+      { text: "このように、道具の進化は、人々の生活を大きく楽にしてきたのである。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "昔はたらいと洗たく板で手洗いしていた", correct: false, note: "× これは歴史の一つの場面だよ。あとの話も続くから足りないよ。" },
@@ -342,6 +395,13 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "川は、山から海に向かって流れる間に、様子を大きく変える。山に近い上流では、水の流れが速く、大きくごつごつした石が多い。中流になると流れがゆるやかになり、石は上流のものよりも丸く小さくなっていく。そして、海に近い下流では、流れがさらにおだやかになり、細かい砂やどろが多く見られるようになる。このように、川は上流から下流に向かうにつれて、流れの速さも、運ばれる石や砂の様子も変化していくのだ。",
+    structure: [
+      { text: "川は、山から海に向かって流れる間に、様子を大きく変える。", role: "support" },
+      { text: "山に近い上流では、水の流れが速く、大きくごつごつした石が多い。", role: "example" },
+      { text: "中流になると流れがゆるやかになり、石は上流のものよりも丸く小さくなっていく。", role: "example" },
+      { text: "そして、海に近い下流では、流れがさらにおだやかになり、細かい砂やどろが多く見られるようになる。", role: "example" },
+      { text: "このように、川は上流から下流に向かうにつれて、流れの速さも、運ばれる石や砂の様子も変化していくのだ。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "上流には大きくごつごつした石が多い", correct: false, note: "× これは上流だけの話だよ。中流・下流の話もあるから足りないよ。" },
@@ -352,6 +412,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "図書室の本は、内容によって分類され、決まった棚に並べられている。物語の本は物語コーナーに、生き物や科学についての本は科学コーナーに置かれていることが多い。こうして本を分類しておくことで、読みたい本のジャンルが決まっていれば、すぐに見つけることができる。もし本がばらばらに置かれていたら、探すのに時間がかかってしまうだろう。",
+    structure: [
+      { text: "図書室の本は、内容によって分類され、決まった棚に並べられている。", role: "support" },
+      { text: "物語の本は物語コーナーに、生き物や科学についての本は科学コーナーに置かれていることが多い。", role: "example" },
+      { text: "こうして本を分類しておくことで、読みたい本のジャンルが決まっていれば、すぐに見つけることができる。", role: "support" },
+      { text: "もし本がばらばらに置かれていたら、探すのに時間がかかってしまうだろう。", role: "reason" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "物語の本は物語コーナーに置かれる", correct: false, note: "× これは分類の一つの例だよ。科学コーナーの話もあるから足りないよ。" },
@@ -362,6 +428,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "学校の給食は、栄養のバランスを考えて献立が作られている。たとえば、肉や魚などのおかずと合わせて、野菜を使った副菜も必ず出されるようにしている。また、季節の食材を取り入れることで、旬の味を楽しめるようにもしている。こうしたくふうによって、子どもたちが自然とバランスのよい食事を身につけられるようになっているのだ。",
+    structure: [
+      { text: "学校の給食は、栄養のバランスを考えて献立が作られている。", role: "support" },
+      { text: "たとえば、肉や魚などのおかずと合わせて、野菜を使った副菜も必ず出されるようにしている。", role: "example" },
+      { text: "また、季節の食材を取り入れることで、旬の味を楽しめるようにもしている。", role: "example" },
+      { text: "こうしたくふうによって、子どもたちが自然とバランスのよい食事を身につけられるようになっているのだ。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "肉や魚のおかずと野菜の副菜が出される", correct: false, note: "× これは工夫の一つの例だよ。旬の食材の話もあるから足りないよ。" },
@@ -372,6 +444,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "図書館には、開館時間外でも本を返せる「返却ポスト」が入り口の近くに設置されている。仕事や用事で開館時間中に来られない人でも、このポストに入れれば、返却したことになる。ただし、CDやDVDなど、こわれやすい物はポストに入れず、開館時間中に直接受付に返す必要がある。こうしたしくみによって、利用者はより返しやすくなっているのだ。",
+    structure: [
+      { text: "図書館には、開館時間外でも本を返せる「返却ポスト」が入り口の近くに設置されている。", role: "example" },
+      { text: "仕事や用事で開館時間中に来られない人でも、このポストに入れれば、返却したことになる。", role: "reason" },
+      { text: "ただし、CDやDVDなど、こわれやすい物はポストに入れず、開館時間中に直接受付に返す必要がある。", role: "support" },
+      { text: "こうしたしくみによって、利用者はより返しやすくなっているのだ。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "夜でも本を返せるポストがある", correct: false, note: "× これは1文目だけの話だよ。こわれやすい物の話も続くから足りないよ。" },
@@ -382,6 +460,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "夏は気温が高く、汗をたくさんかくため、体の水分が不足しやすい。水分が不足すると、頭がぼんやりしたり、体がだるくなったりすることがある。のどがかわいたと感じる前から、少しずつこまめに水分をとることが大切だ。とくに外で遊ぶときは、休けいのたびに水を飲むように心がけるとよい。",
+    structure: [
+      { text: "夏は気温が高く、汗をたくさんかくため、体の水分が不足しやすい。", role: "reason" },
+      { text: "水分が不足すると、頭がぼんやりしたり、体がだるくなったりすることがある。", role: "example" },
+      { text: "のどがかわいたと感じる前から、少しずつこまめに水分をとることが大切だ。", role: "support" },
+      { text: "とくに外で遊ぶときは、休けいのたびに水を飲むように心がけるとよい。", role: "example" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "夏は汗をたくさんかく", correct: false, note: "× これは1文目だけの話だよ。水分補給の大切さが文章の中心だよ。" },
@@ -392,6 +476,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "セミは、卵から土の中の幼虫として何年も過ごしたあと、地上に出てきて成虫になる。成虫になってからの寿命は、多くの場合1週間から1か月ほどと短い。長い年月を土の中で過ごすのに、地上での時間はとても短いのだ。この短い間に、セミは仲間を見つけて鳴き、次の世代へと命をつないでいく。",
+    structure: [
+      { text: "セミは、卵から土の中の幼虫として何年も過ごしたあと、地上に出てきて成虫になる。", role: "support" },
+      { text: "成虫になってからの寿命は、多くの場合1週間から1か月ほどと短い。", role: "example" },
+      { text: "長い年月を土の中で過ごすのに、地上での時間はとても短いのだ。", role: "support" },
+      { text: "この短い間に、セミは仲間を見つけて鳴き、次の世代へと命をつないでいく。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "セミは土の中で何年も過ごす", correct: false, note: "× これは1文目だけの話だよ。成虫になってからの話が文章の中心だよ。" },
@@ -402,6 +492,11 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "駅前の商店街では、買い物客を増やすためにさまざまな工夫をしている。たとえば、月に一度、福引きができるスタンプラリーを開いたり、夏には涼しい休けい所を用意したりしている。こうした取り組みによって、遠くのショッピングモールではなく、地元の商店街で買い物をする人が少しずつ増えているという。",
+    structure: [
+      { text: "駅前の商店街では、買い物客を増やすためにさまざまな工夫をしている。", role: "support" },
+      { text: "たとえば、月に一度、福引きができるスタンプラリーを開いたり、夏には涼しい休けい所を用意したりしている。", role: "example" },
+      { text: "こうした取り組みによって、遠くのショッピングモールではなく、地元の商店街で買い物をする人が少しずつ増えているという。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "スタンプラリーが月に一度開かれる", correct: false, note: "× これは工夫の一つの例だよ。休けい所の話もあるから足りないよ。" },
@@ -412,6 +507,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "折り紙は、もともと日本で生まれた遊びだが、今では世界中で親しまれている。海外の学校では、集中力を高める活動として折り紙の授業を取り入れているところもある。また、折り紙の技術は、宇宙で使われる装置をコンパクトに折りたたむ研究にも応用されているという。こうして、折り紙はあそびの枠を超え、さまざまな分野で役立てられているのだ。",
+    structure: [
+      { text: "折り紙は、もともと日本で生まれた遊びだが、今では世界中で親しまれている。", role: "support" },
+      { text: "海外の学校では、集中力を高める活動として折り紙の授業を取り入れているところもある。", role: "example" },
+      { text: "また、折り紙の技術は、宇宙で使われる装置をコンパクトに折りたたむ研究にも応用されているという。", role: "example" },
+      { text: "こうして、折り紙はあそびの枠を超え、さまざまな分野で役立てられているのだ。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "折り紙は日本で生まれた遊びだ", correct: false, note: "× これは1文目だけの話だよ。世界への広がりが文章の中心だよ。" },
@@ -422,6 +523,12 @@ const GIST_QUESTIONS = [
   },
   {
     passage: "天気予報は、気温や気圧、風の動きなど、さまざまなデータをもとに作られている。人工衛星やアメダスという観測装置が、日本各地の空や地上のようすを24時間はかり続けている。集められた大量のデータをコンピューターで計算することで、明日の天気や気温を予想しているのだ。こうしたしくみのおかげで、私たちは出かける前に傘が必要かどうかを知ることができる。",
+    structure: [
+      { text: "天気予報は、気温や気圧、風の動きなど、さまざまなデータをもとに作られている。", role: "support" },
+      { text: "人工衛星やアメダスという観測装置が、日本各地の空や地上のようすを24時間はかり続けている。", role: "example" },
+      { text: "集められた大量のデータをコンピューターで計算することで、明日の天気や気温を予想しているのだ。", role: "support" },
+      { text: "こうしたしくみのおかげで、私たちは出かける前に傘が必要かどうかを知ることができる。", role: "support" },
+    ],
     prompt: "この文章で一番言いたいことはどれかな?",
     options: [
       { text: "気温や気圧のデータが集められる", correct: false, note: "× これは1文目だけの話だよ。しくみ全体の説明が文章の中心だよ。" },
@@ -1312,6 +1419,9 @@ function OptionsList({ question, selected, onChoose }) {
 }
 
 function AnswerFeedback({ question, selected, notesToShow, onNext, isLast }) {
+  const [diagramOpen, setDiagramOpen] = useState(false);
+  const hasStructure = Array.isArray(question.structure) && question.structure.length > 0;
+  const mainText = hasStructure ? question.options.find((o) => o.correct)?.text : null;
   return (
     <div className="mt-4 space-y-2">
       <div
@@ -1345,6 +1455,21 @@ function AnswerFeedback({ question, selected, notesToShow, onNext, isLast }) {
           </div>
         );
       })}
+
+      {hasStructure && (
+        <>
+          <button
+            onClick={() => setDiagramOpen((v) => !v)}
+            className="flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-yellow-300"
+            style={{ backgroundColor: `${BRASS}1F`, color: BRASS, border: `1px solid ${BRASS}66` }}
+          >
+            <FileText size={14} />
+            {diagramOpen ? "図をとじる" : "文章の構造を図で見る"}
+          </button>
+          {diagramOpen && <StructureDiagram structure={question.structure} mainText={mainText} />}
+        </>
+      )}
+
       <button onClick={onNext} className="mt-1 w-full sm:w-auto rounded-md px-5 py-2 font-bold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-yellow-300" style={{ backgroundColor: INK }}>
         {isLast ? "結果を見る" : "次の事件へ"}
       </button>
@@ -1361,6 +1486,61 @@ function ClueCard({ label, text, accent }) {
       <p className="text-[15px] leading-7" style={{ color: INK }}>
         {text}
       </p>
+    </div>
+  );
+}
+
+// ---------- 「事件の真相」モード用: 文章構造の図解 ----------
+const STRUCTURE_ROLE_META = {
+  reason: { label: "理由", color: GOOD },
+  example: { label: "具体例", color: SKY },
+  support: { label: "背景・補足", color: PLUM },
+};
+
+function StructureDiagram({ structure, mainText }) {
+  const groups = { reason: [], example: [], support: [] };
+  structure.forEach((s) => {
+    if (groups[s.role]) groups[s.role].push(s.text);
+  });
+  const order = ["example", "reason", "support"];
+  return (
+    <div className="rounded-md p-4" style={{ backgroundColor: "#fff", border: `1px solid ${INK}22` }}>
+      <div className="text-center mb-4">
+        <p className="text-[10px] font-bold tracking-widest mb-1" style={{ color: BRASS }}>
+          主題(このお話の結論)
+        </p>
+        <div
+          className="inline-block rounded-md px-4 py-2 text-sm font-bold max-w-full"
+          style={{ border: `2px solid ${BRASS}`, backgroundColor: `${BRASS}12`, color: INK }}
+        >
+          {mainText}
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-4">
+        {order
+          .filter((key) => groups[key].length > 0)
+          .map((key) => {
+            const meta = STRUCTURE_ROLE_META[key];
+            return (
+              <div key={key}>
+                <div className="text-center text-xs font-bold mb-1.5" style={{ color: meta.color }}>
+                  ↑ {meta.label}
+                </div>
+                <div className="space-y-1.5">
+                  {groups[key].map((text, i) => (
+                    <div
+                      key={i}
+                      className="text-xs rounded px-2.5 py-2 leading-5"
+                      style={{ backgroundColor: `${meta.color}0F`, borderLeft: `3px solid ${meta.color}`, color: INK }}
+                    >
+                      {text}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }
