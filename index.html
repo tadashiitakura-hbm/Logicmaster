@@ -1850,9 +1850,14 @@ function AnswerFeedback({ question, selected, notesToShow, onNext, isLast }) {
             style={{ backgroundColor: `${BRASS}1F`, color: BRASS, border: `1px solid ${BRASS}66` }}
           >
             <FileText size={14} />
-            {diagramOpen ? "図をとじる" : "文章の構造を図で見る"}
+            {diagramOpen ? "考え方と図をとじる" : "考え方と図を見る"}
           </button>
-          {diagramOpen && <StructureDiagram structure={question.structure} mainText={mainText} />}
+          {diagramOpen && (
+            <>
+              <SummaryStepsGuide />
+              <StructureDiagram structure={question.structure} mainText={mainText} />
+            </>
+          )}
         </>
       )}
 
@@ -1882,6 +1887,56 @@ const STRUCTURE_ROLE_META = {
   example: { label: "具体例", color: SKY },
   support: { label: "背景・補足", color: PLUM },
 };
+
+// ---------- 「事件の真相」モード用: 要旨を見つける考え方ステップ ----------
+const SUMMARY_STEPS = [
+  {
+    title: "くり返し出てくる言葉をさがす",
+    body: "文章の中で何度も出てくる言葉や話題は、事件の「主犯」(中心テーマ)であることが多いよ。",
+  },
+  {
+    title: "合図の言葉のうしろをチェックする",
+    body: "「しかし」「だから」「つまり」「こうして」のうしろには、たいてい大事な結論(真相)が書かれているよ。",
+  },
+  {
+    title: "それぞれの文が「証拠」か「真相」かを見分ける",
+    body: "下の図の色分けを見てみよう。「具体例」や「理由」は真相を裏づける証拠、真ん中の「主題」が事件の真相だよ。",
+  },
+  {
+    title: "選択肢が「せますぎないか」をチェックする",
+    body: "一つの証拠(具体例)だけを指している選択肢は、真相ではなく手がかりの一つにすぎないよ。すべての証拠をまとめられている選択肢を選ぼう。",
+  },
+];
+
+function SummaryStepsGuide() {
+  return (
+    <div className="rounded-md p-4 mb-3" style={{ backgroundColor: `${INK}08`, border: `1px dashed ${INK}55` }}>
+      <p className="text-xs font-bold mb-2" style={{ color: INK }}>
+        🔎 真相(要旨)を見つける考え方
+      </p>
+      <div className="space-y-2">
+        {SUMMARY_STEPS.map((step, i) => (
+          <div key={i} className="flex items-start gap-2">
+            <span
+              className="shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center mt-0.5"
+              style={{ backgroundColor: BRASS, color: "#fff" }}
+            >
+              {i + 1}
+            </span>
+            <div>
+              <p className="text-xs font-bold" style={{ color: INK }}>
+                {step.title}
+              </p>
+              <p className="text-xs mt-0.5" style={{ color: INK, opacity: 0.8 }}>
+                {step.body}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function StructureDiagram({ structure, mainText }) {
   const groups = { reason: [], example: [], support: [] };
