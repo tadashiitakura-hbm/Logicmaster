@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel" data-presets="react" data-type="module">
+<script type="text/plain" id="app-source">
 const { useState, useEffect, useRef } = React;
 
 // ---------- localStorage を window.storage 互換にするラッパー ----------
@@ -1690,6 +1690,24 @@ function StatCard({ label, value, accent }) {
 
 const rootEl = document.getElementById("root");
 ReactDOM.createRoot(rootEl).render(<ReadingDetectiveApp />);
+</script>
+<script>
+  (function () {
+    var src = document.getElementById('app-source').textContent;
+    try {
+      var result = Babel.transform(src, {
+        presets: [["react", { runtime: "classic" }]]
+      });
+      var s = document.createElement('script');
+      s.textContent = result.code;
+      document.body.appendChild(s);
+    } catch (e) {
+      document.getElementById('root').innerHTML =
+        '<pre style="color:red;white-space:pre-wrap;padding:16px;">起動エラー: ' +
+        (e && e.message ? e.message : String(e)) + '</pre>';
+      console.error(e);
+    }
+  })();
 </script>
 </body>
 </html>
