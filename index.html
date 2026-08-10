@@ -1719,10 +1719,15 @@ const MODES = [
 // ---------- 20日間カリキュラム用データ ----------
 const TOTAL_DAYS = 20;
 const QUESTIONS_PER_DAY = 16; // 目安60分(1問あたり読む・考える・ヒント・解説で約3〜4分)
+const PER_MODE_DAY_COUNT = QUESTIONS_PER_DAY / MODES.length; // 4モード均等(各25%)
 
-const ALL_QUESTIONS = MODES.flatMap((m) =>
-  m.questions.map((q, i) => ({ ...q, modeId: m.id, modeTitle: m.title, modeAccent: m.accent, uid: `${m.id}-${i}` }))
-);
+const MODE_POOLS = MODES.map((m, mi) => ({
+  modeId: m.id,
+  seedBase: mi * 97 + 13,
+  questions: m.questions.map((q, i) => ({ ...q, modeId: m.id, modeTitle: m.title, modeAccent: m.accent, uid: `${m.id}-${i}` })),
+}));
+
+const ALL_QUESTIONS = MODE_POOLS.flatMap((mp) => mp.questions);
 
 function seededShuffle(array, seed) {
   const arr = array.slice();
@@ -1738,30 +1743,38 @@ function seededShuffle(array, seed) {
   return arr;
 }
 
-// ノーリピートローテーション:
-// 全問題を1回ずつ出し切ってから(1周)、次の周でまた全問シャッフルして出す。
-// そのため「1周」の間は同じ問題が2回出ることはない。
-const lapCache = {};
-function getLapShuffle(lap) {
-  if (!lapCache[lap]) lapCache[lap] = seededShuffle(ALL_QUESTIONS, lap * 104729 + 7);
-  return lapCache[lap];
+// ノーリピートローテーション(モードごとに独立):
+// それぞれのモードのプールを1周ずつ出し切ってから、次の周でまたそのモードの
+// プールをシャッフルして出す。モードごとに1日4問(=25%)ずつ均等に選ぶことで、
+// 「事件の真相」「依頼人の要望整理」もそれぞれ必ず25%になるようにしている。
+const lapCachePerMode = {};
+function getLapShuffleForMode(mp, lap) {
+  const cacheKey = `${mp.modeId}-${lap}`;
+  if (!lapCachePerMode[cacheKey]) lapCachePerMode[cacheKey] = seededShuffle(mp.questions, lap * 104729 + mp.seedBase);
+  return lapCachePerMode[cacheKey];
 }
 
-function getDayQuestions(day) {
-  const poolSize = ALL_QUESTIONS.length;
-  const start = (day - 1) * QUESTIONS_PER_DAY;
-  const end = start + QUESTIONS_PER_DAY;
+function getModeSliceForDay(mp, day) {
+  const poolSize = mp.questions.length;
+  const start = (day - 1) * PER_MODE_DAY_COUNT;
+  const end = start + PER_MODE_DAY_COUNT;
   const result = [];
   let idx = start;
   while (idx < end) {
     const lap = Math.floor(idx / poolSize);
     const posInLap = idx % poolSize;
-    const lapShuffled = getLapShuffle(lap);
+    const lapShuffled = getLapShuffleForMode(mp, lap);
     const takeCount = Math.min(poolSize - posInLap, end - idx);
     result.push(...lapShuffled.slice(posInLap, posInLap + takeCount));
     idx += takeCount;
   }
   return result;
+}
+
+function getDayQuestions(day) {
+  const combined = MODE_POOLS.flatMap((mp) => getModeSliceForDay(mp, day));
+  // モードの出題順は毎回ランダムに混ぜる(モードごとにかたまらないように)
+  return shuffleArray(combined);
 }
 
 function todayISODate() {
@@ -1778,7 +1791,7 @@ function formatMMSS(totalSec) {
 const DATA_KEY = "detective-curriculum-data";
 // data shape: { logs: [{date, day, mode, correct}], dayStatus: { [day]: {completed, correctCount, totalCount, timeSec, lastPlayedISO, playCount} } }
 
-const APP_VERSION = "v1.6.0";
+const APP_VERSION = "v1.7.0";
 
 function shuffleArray(arr) {
   const copy = arr.slice();
@@ -2028,7 +2041,7 @@ function Home({ data, loaded, onStart, onStartDay, nextDay, onOpenParent }) {
         </div>
         <p className="text-xs mb-4" style={{ color: INK, opacity: 0.8 }}>
           1日ぶん、目安60分(問題{QUESTIONS_PER_DAY}問)。好きな日をタップして始められるよ。
-          全{ALL_QUESTIONS.length}問を1問ずつ出し切ってから、また全部シャッフルするよ(同じ問題が続けて出ないしくみ)。
+          手がかり・真相・証拠さがし・要望整理から、1日{PER_MODE_DAY_COUNT}問ずつ均等に出るよ(それぞれ25%)。各分野のプールを出し切ってからシャッフルするので、同じ問題が続けて出ないしくみだよ。
         </p>
         <button
           onClick={() => onStartDay(nextDay)}
